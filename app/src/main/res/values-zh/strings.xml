@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">mCKM</string>
+    <string name="app_desc">本App实现了在系统WebView不支持鼠标锁定的情况下的简单的鼠标锁定</string>
+    <string name="url">启动URL</string>
+    <string name="clear_browser_data">清除浏览器数据</string>
+    <string name="confirm_clear_browser_data">确认清除浏览器数据</string>
+    <string name="default_confirm_title">二次确认</string>
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+    <string name="skip_user_guide">跳过用户引导</string>
+    <string name="developer_settings">开发者设置</string>
+    <string name="launch">启动</string>
+    <string name="inject_console">注入vConsole</string>
+    <string name="input_user_agent">浏览器UA</string>
+    <string name="input_title">请输入内容</string>
+    <string name="check_update_on_launch">启动时检测更新</string>
+    <string name="setting">设置</string>
+    <string name="opensource_license">开放源代码许可</string>
+    <string name="check_update">检测更新</string>
+    <string name="nav_home">首页</string>
+    <string name="nav_about">关于</string>
+    <string name="new_version">发现新版本</string>
+    <string name="upgrade">升级</string>
+    <string name="no_new_version">已是最新版本</string>
+    <string name="save_tombstones_file">保存墓碑文件</string>
+    <string name="reset_to_default">还原默认</string>
+</resources>

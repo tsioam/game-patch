@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">mCKM</string>
+    <string name="app_desc"> </string>
+    <string name="url">URL</string>
+    <string name="clear_browser_data">Clear Browser Data</string>
+    <string name="confirm_clear_browser_data">Confirm Clear Browser Data</string>
+    <string name="default_confirm_title">Secondary Confirmation</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="skip_user_guide">Skip User Guide</string>
+    <string name="developer_settings">Developer Settings</string>
+    <string name="launch">Launch</string>
+    <string name="inject_console">Inject vConsole</string>
+    <string name="input_user_agent">Browser UA</string>
+    <string name="input_title">Enter Content</string>
+    <string name="check_update_on_launch">Check for Updates on Launch</string>
+    <string name="setting">Settings</string>
+    <string name="opensource_license">Open Source License</string>
+    <string name="check_update">Check for Updates</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_about">About</string>
+    <string name="new_version">New Version Found</string>
+    <string name="upgrade">Upgrade</string>
+    <string name="no_new_version">Latest Version</string>
+    <string name="save_tombstones_file">Save Tombstones File</string>
+    <string name="reset_to_default">Reset to default</string>
+</resources>

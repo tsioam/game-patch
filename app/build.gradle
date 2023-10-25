@@ -1,0 +1,83 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'app.cloudgame.web'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "app.cloudgame.web"
+        minSdk 26
+        targetSdk 34
+        versionCode 90
+        versionName "v0.9.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../release-key.jks")
+            storePassword System.getenv("STORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    buildFeatures {
+        compose true
+        viewBinding true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.1"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    def composeBom = platform('androidx.compose:compose-bom:2023.01.00')
+    implementation composeBom
+    androidTestImplementation composeBom
+
+    implementation "androidx.compose.material:material:1.5.4"
+    implementation 'androidx.compose.material3:material3'
+    implementation "androidx.compose.animation:animation:1.5.4"
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.activity:activity-compose:1.8.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.tencent:mmkv:1.3.1'
+    testImplementation 'junit:junit:4.13.2'
+
+    //app-updater
+    implementation 'com.github.jenly1314.AppUpdater:app-updater:1.2.0'
+    implementation 'com.github.jenly1314.AppUpdater:app-dialog:1.2.0'
+
+    implementation 'com.iqiyi.xcrash:xcrash-android-lib:3.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
