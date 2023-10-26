@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.cloudgame.web.BuildConfig
@@ -32,6 +33,8 @@ import app.cloudgame.web.R
 import app.cloudgame.web.webview.LICENSE
 import app.cloudgame.web.webview.TG_GROUP
 import app.cloudgame.web.webview.isTelegramInstalled
+
+val GH_URL = "https://github.com/tsioam/game-patch"
 
 @Composable
 fun MenuItem(text: String, onClick: () -> Unit, hideArrow: Boolean = false) {
@@ -77,6 +80,15 @@ fun AboutPage(paddingValues: PaddingValues, onCheckUpdates: () -> Unit) {
         )
         Spacer(modifier = Modifier.width(12.dp).height(4.dp))
         Text(text = "${stringResource(R.string.app_name)} ${BuildConfig.VERSION_NAME} (Build ${BuildConfig.VERSION_CODE})", fontSize = 16.sp)
+        Text(
+            GH_URL,
+            fontSize = 14.sp,
+            textDecoration = TextDecoration.Underline,
+            modifier = Modifier.clickable {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(GH_URL))
+                context.startActivity(intent)
+            }
+        )
         Text(
             text = stringResource(R.string.app_desc),
             fontSize = 12.sp,

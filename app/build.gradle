@@ -11,10 +11,14 @@ android {
         applicationId "app.cloudgame.web"
         minSdk 26
         targetSdk 34
-        versionCode 90
-        versionName "v0.9.0"
+        versionCode 91
+        versionName "v0.9.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
     }
 
     signingConfigs {
