@@ -6,15 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".WebActivity">
 
-    <app.cloudgame.web.webview.GameView
-        android:id="@+id/mouse_view"
+    <app.cloudgame.web.webview.WebContainer
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </app.cloudgame.web.webview.GameView>
+        <app.cloudgame.web.webview.GameView
+            android:id="@+id/mouse_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </app.cloudgame.web.webview.GameView>
+    </app.cloudgame.web.webview.WebContainer>
 
     <TextView
         android:textColor="@color/red"

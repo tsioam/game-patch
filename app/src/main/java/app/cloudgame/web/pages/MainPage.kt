@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
@@ -33,10 +34,7 @@ import app.cloudgame.web.Configuration
 import app.cloudgame.web.R
 import app.cloudgame.web.UpdateChecker
 import app.cloudgame.web.WebActivity
-import app.cloudgame.web.components.ConfirmItem
 import app.cloudgame.web.components.FormSwitch
-import app.cloudgame.web.components.InputDialog
-import app.cloudgame.web.webview.clearWebViewUserDataAndCache
 import com.google.gson.Gson
 import java.net.URL
 
@@ -103,24 +101,6 @@ fun Home(paddingValues: PaddingValues) {
         }
 
         Spacer(Modifier.height(2.dp))
-        InputDialog(
-            defaultValueGetter = {
-                Configuration.getConfiguration().userAgent
-            },
-            onValueSave = {
-                Configuration.getConfiguration().setStringValue(Configuration.USER_AGENT, it)
-            },
-            title = stringResource(R.string.input_user_agent),
-            keyName = stringResource(R.string.input_user_agent)
-        )
-
-        ConfirmItem(
-            name = stringResource(R.string.clear_browser_data),
-            onConfirm = {
-                clearWebViewUserDataAndCache(context)
-            },
-            tip = stringResource(R.string.confirm_clear_browser_data)
-        )
 
         AnimatedVisibility(
             visible = TextUtils.isEmpty(launchUrl) || isYsHost(launchUrl),
@@ -177,6 +157,7 @@ fun MainPage() {
     var selectedTab by remember { mutableIntStateOf(0) }
     val bottomNavItems = listOf(
         BottomNavItem(stringResource(R.string.nav_home), Icons.Default.Home),
+        BottomNavItem(stringResource(R.string.shortcut), Icons.Default.Favorite),
         BottomNavItem(stringResource(R.string.nav_about), Icons.Default.Info),
     )
 
@@ -201,7 +182,8 @@ fun MainPage() {
         content = {
             when (selectedTab) {
                 0 -> Home(it)
-                1 -> AboutPage(
+                1 -> CollectionsPage(it)
+                2 -> AboutPage(
                     paddingValues = it,
                     onCheckUpdates = {
                         UpdateChecker.checkUpdate(context)

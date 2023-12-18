@@ -3,13 +3,13 @@ package app.cloudgame.web.webview;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.InputDevice;
-import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
@@ -21,18 +21,18 @@ import android.webkit.WebViewClient;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.Locale;
 import java.util.WeakHashMap;
 
 import app.cloudgame.web.Configuration;
+import app.cloudgame.web.WebActivity;
 
 public class GameView extends WebView {
 
     private boolean hasSetup = false;
     private JSBridge jsBridge;
-    private float currentMouseX = 0;
-    private float currentMouseY = 0;
     private IWebPageCallback webCallback;
+    private WebContainer container;
+    private ChromeWebViewClient chromeWebViewClient;
 
     public GameView(@NonNull Context context) {
         super(context);
@@ -61,6 +61,18 @@ public class GameView extends WebView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (getParent() instanceof WebContainer && container == null) {
+            container = ((WebContainer) getParent());
+            container.setWebView(this);
+        }
+    }
+
+    public JSBridge getJsBridge() {
+        return jsBridge;
+    }
+
+    public WebContainer getContainer() {
+        return container;
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -80,43 +92,12 @@ public class GameView extends WebView {
 
         setDesktopMode(true);
         setWebViewClient(new GameWebViewClient());
-        setWebChromeClient(new ChromeWebViewClient());
+
+        chromeWebViewClient = new ChromeWebViewClient(this);
+        setWebChromeClient(chromeWebViewClient);
 
         jsBridge = new JSBridge(this);
         addJavascriptInterface(jsBridge, "CG_BRIDGE");
-    }
-
-    @Override
-    public boolean onGenericMotionEvent(MotionEvent event) {
-        if (((event.getSource() & InputDevice.SOURCE_MOUSE)  != 0) && event.getActionMasked() == MotionEvent.ACTION_MOVE && !hasPointerCapture()) {
-            currentMouseX = event.getX();
-            currentMouseY = event.getY();
-        }
-        return super.onGenericMotionEvent(event);
-    }
-
-    @Override
-    public boolean onCapturedPointerEvent(MotionEvent motionEvent) {
-        if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE || motionEvent.getActionMasked() == MotionEvent.ACTION_HOVER_MOVE) {
-            int x = (int) motionEvent.getX();
-            int y = (int) motionEvent.getY();
-            String script = String.format(Locale.ENGLISH, "window.EVAL_MOVEMENT_CB(%d,%d)", x, y);
-            evaluateJavascript(script, null);
-        } else {
-            motionEvent.setSource(InputDevice.SOURCE_MOUSE);
-            motionEvent.setLocation(currentMouseX, currentMouseY);
-            return super.onGenericMotionEvent(motionEvent);
-        }
-        return true;
-    }
-
-    @Override
-    public void onPointerCaptureChange(boolean hasCapture) {
-        super.onPointerCaptureChange(hasCapture);
-        String script = String.format("window.POINTER_LOCK_CHANGE_CB(%s, %s)", hasCapture? "true": "false", jsBridge.getGson().toJson(jsBridge.getLastLockEleId()));
-        String TAG = "GameView";
-        Log.d(TAG, script);
-        evaluateJavascript(script, null);
     }
 
     public void setDesktopMode(boolean enabled) {
@@ -171,6 +152,50 @@ public class GameView extends WebView {
 
     private static class ChromeWebViewClient extends WebChromeClient {
         private final WeakHashMap<WebView,Dialog> mDialogWeakMap = new WeakHashMap<>();
+        private final GameView webView;
+
+        private View customView;
+        private WebChromeClient.CustomViewCallback customViewCallback;
+
+        public ChromeWebViewClient(GameView gameView) {
+            this.webView = gameView;
+        }
+
+        @Override
+        public void onShowCustomView(View view, CustomViewCallback callback) {
+
+            // 如果已有全屏视图，直接返回
+            if (customView != null) {
+                callback.onCustomViewHidden();
+                return;
+            }
+
+            customView = view;
+            customViewCallback = callback;
+
+            webView.getContainer().notifyLockStateWithCallback(false, v -> {
+                webView.getContainer().releasePointerCapture();
+                webView.getContainer().removeView(webView);
+                webView.getContainer().addView(
+                        customView,
+                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                );
+            });
+        }
+
+        @Override
+        public void onHideCustomView() {
+            if (customView == null) {
+                return;
+            }
+
+            webView.getContainer().releasePointerCapture();
+            webView.getContainer().removeView(customView);
+            webView.getContainer().addView(webView);
+
+            customView = null;
+            customViewCallback.onCustomViewHidden();
+        }
 
         @SuppressLint("SetJavaScriptEnabled")
         private static void setupWindowWebView(WebView webView, Dialog dialog) {
@@ -181,7 +206,14 @@ public class GameView extends WebView {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                    String scheme =request.getUrl().getScheme();
+                    String scheme = request.getUrl().getScheme();
+                    if (!request.getUrl().toString().contains("mihoyo.com")) {
+                        Intent intent = new Intent(view.getContext(), WebActivity.class);
+                        intent.putExtra(WebActivity.URL, request.getUrl().toString());
+                        webView.getContext().startActivity(intent);
+                        dialog.dismiss();
+                        return true;
+                    }
                     if ("https".equals(scheme) || "http".equals(scheme)) {
                         return false;
                     }

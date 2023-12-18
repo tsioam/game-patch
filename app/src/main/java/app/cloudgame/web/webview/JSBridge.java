@@ -12,12 +12,12 @@ public class JSBridge {
 
     private static final String TAG = "GameViewJsBridge";
 
-    private final WebView mWebView;
+    private final GameView mWebView;
     private final Gson mGson;
     private static final String SUCCESS = "{\"code\": 0}";
     private String lastLockEleId = "";
 
-    public JSBridge(WebView webView) {
+    public JSBridge(GameView webView) {
         this.mWebView = webView;
         this.mGson = new Gson();
     }
@@ -45,13 +45,14 @@ public class JSBridge {
     }
 
     private void runInUiThread(Runnable runnable) {
-        mWebView.post(runnable);
+        mWebView.getContainer().post(runnable);
     }
 
     private void requestPointerLock(String callbackId, String eleId) {
+        Log.d(TAG, "request pointer lock");
         runInUiThread(() -> {
             lastLockEleId = eleId;
-            mWebView.requestPointerCapture();
+            mWebView.getContainer().requestPointerCapture();
             evalCallback(callbackId, SUCCESS);
         });
     }
@@ -59,7 +60,7 @@ public class JSBridge {
     private void exitPointerLock(String callbackId, String eleId) {
         Log.d(TAG, "request exit pointer lock");
         runInUiThread(() -> {
-            mWebView.releasePointerCapture();
+            mWebView.getContainer().releasePointerCapture();
             evalCallback(callbackId, SUCCESS);
         });
     }

@@ -1,7 +1,12 @@
 package app.cloudgame.web.webview
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.WebStorage
@@ -10,6 +15,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.IOException
+import java.net.URL
 
 val TG_GROUP = "https://t.me/+4fRYkz3zwuhlMzU1"
 val LICENSE = "                                 Apache License\n" +
@@ -250,6 +256,18 @@ fun isTelegramInstalled(context: Context): Boolean {
         context.packageManager.getPackageInfo(packageName, 0)
         true
     } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
+}
+
+fun isValidHttpUrl(url: String?): Boolean {
+    if (url == null) {
+        return false
+    }
+    return try {
+        URL(url)
+        true
+    } catch (_: Exception) {
         false
     }
 }

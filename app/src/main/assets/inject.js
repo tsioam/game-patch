@@ -68,7 +68,7 @@
     value: () => {
       evalBridgeMethodPromise('exitPointerLock').then(() => { })
     },
-    writable: false
+    writable: true
   })
 
   const mouseMoveMap = new Map()

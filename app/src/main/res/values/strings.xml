@@ -24,4 +24,13 @@
     <string name="no_new_version">Latest Version</string>
     <string name="save_tombstones_file">Save Tombstones File</string>
     <string name="reset_to_default">Reset to default</string>
+    <string name="shortcut">shortcut</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
+    <string name="mouse_rate">Mouse Speed</string>
+    <string name="new_entry">New</string>
+    <string name="entry_name">Name</string>
+    <string name="icon">Icon</string>
+    <string name="required">required</string>
+    <string name="format_error">format error</string>
 </resources>

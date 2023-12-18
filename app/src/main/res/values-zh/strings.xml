@@ -24,4 +24,13 @@
     <string name="no_new_version">已是最新版本</string>
     <string name="save_tombstones_file">保存墓碑文件</string>
     <string name="reset_to_default">还原默认</string>
+    <string name="shortcut">快捷入口</string>
+    <string name="edit">修改</string>
+    <string name="remove">删除</string>
+    <string name="mouse_rate">鼠标速率</string>
+    <string name="new_entry">新建</string>
+    <string name="entry_name">入口名称</string>
+    <string name="icon">图标</string>
+    <string name="required">必填</string>
+    <string name="format_error">格式错误</string>
 </resources>

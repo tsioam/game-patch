@@ -14,11 +14,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
 public class Configuration {
 
+    public static final String ENHANCE_PC = "enhance_pc";
     public static final String V_CONSOLE = "inject_console";
     private static final String BRIDGE_INJECT = "init_bridge";
     public static final String USER_AGENT = "user_agent";
@@ -55,6 +57,7 @@ public class Configuration {
         mScriptMap.put(Configuration.V_CONSOLE, readAssetFileAsString(context, "vconsole.js"));
         mScriptMap.put(Configuration.BRIDGE_INJECT, readAssetFileAsString(context, "inject.js"));
         mScriptMap.put(Configuration.FORCE_DISABLE_USER_GUIDE, readAssetFileAsString(context, "disableGuide.js"));
+        mScriptMap.put(Configuration.ENHANCE_PC, readAssetFileAsString(context, "enhancePC.js"));
         mPageStartScripts = loadPageStartScripts();
     }
 
@@ -67,10 +70,11 @@ public class Configuration {
     }
 
     private String[] loadPageStartScripts() {
-        ArrayList<String> scripts = new ArrayList<>();
+        HashSet<String> scripts = new HashSet<>();
         if (readBooleanValue(Configuration.V_CONSOLE)) {
             scripts.add(mScriptMap.get(Configuration.V_CONSOLE));
         }
+        scripts.add(mScriptMap.get(Configuration.ENHANCE_PC));
         scripts.add(mScriptMap.get(Configuration.BRIDGE_INJECT));
         return scripts.toArray(new String[0]);
     }
@@ -127,6 +131,14 @@ public class Configuration {
 
     public String getScript(String key) {
         return mScriptMap.get(key);
+    }
+
+    public int getMouseSpeedLevel() {
+        return kv.decodeInt("mouse_speed", 4);
+    }
+
+    public void setMouseSpeedLevel(int level) {
+        kv.encode("mouse_speed", level);
     }
 
 }
