@@ -22,6 +22,7 @@ public class Configuration {
 
     public static final String ENHANCE_PC = "enhance_pc";
     public static final String V_CONSOLE = "inject_console";
+    public static final String DISABLE_NO_VIRTUAL_BACK = "disable_no_virtual_back";
     private static final String BRIDGE_INJECT = "init_bridge";
     public static final String USER_AGENT = "user_agent";
     public static final String LAUNCH_URL = "launch_url";

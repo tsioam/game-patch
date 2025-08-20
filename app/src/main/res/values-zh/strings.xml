@@ -10,6 +10,7 @@
     <string name="skip_user_guide">跳过用户引导</string>
     <string name="developer_settings">开发者设置</string>
     <string name="launch">启动</string>
+    <string name="disable_no_virtual_back">禁用来自非虚拟设备的返回</string>
     <string name="inject_console">注入vConsole</string>
     <string name="input_user_agent">浏览器UA</string>
     <string name="input_title">请输入内容</string>

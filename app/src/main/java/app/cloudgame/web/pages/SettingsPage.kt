@@ -117,6 +117,7 @@ fun SettingsPage(saveTombFile: () -> Unit) {
                 tip = stringResource(R.string.confirm_clear_browser_data)
             )
             FormSwitch(name = stringResource(R.string.inject_console), Configuration.V_CONSOLE)
+            FormSwitch(name = stringResource(R.string.disable_no_virtual_back), Configuration.DISABLE_NO_VIRTUAL_BACK)
             FormSwitch(name = stringResource(R.string.check_update_on_launch), Configuration.CHECK_UPDATE_ON_LAUNCH)
             Row(
                 modifier = Modifier

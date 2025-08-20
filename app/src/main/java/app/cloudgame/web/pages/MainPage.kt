@@ -75,7 +75,7 @@ fun Home(paddingValues: PaddingValues) {
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(10.dp))
                     .shadow(2.dp),
-                colors = TextFieldDefaults.textFieldColors(
+                colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 ),

@@ -10,6 +10,7 @@
     <string name="skip_user_guide">Skip User Guide</string>
     <string name="developer_settings">Developer Settings</string>
     <string name="launch">Launch</string>
+    <string name="disable_no_virtual_back">Disable back actions from non-virtual devices</string>
     <string name="inject_console">Inject vConsole</string>
     <string name="input_user_agent">Browser UA</string>
     <string name="input_title">Enter Content</string>

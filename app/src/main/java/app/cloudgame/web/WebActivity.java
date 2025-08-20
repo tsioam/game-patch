@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Choreographer;
+import android.view.InputDevice;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -101,6 +104,19 @@ public class WebActivity extends Activity implements IWebPageCallback {
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK &&
+                Configuration.getConfiguration().readBooleanValue(Configuration.DISABLE_NO_VIRTUAL_BACK)
+        ) {
+            InputDevice device = InputDevice.getDevice(event.getDeviceId());
+            if (device != null && !device.isVirtual()) {
+                return true;
+            }
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
     @Override
